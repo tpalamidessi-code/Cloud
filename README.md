@@ -42,19 +42,16 @@ distinguish a genuinely new development from yesterday's story.
 
 Informational only, not legal advice.
 
-## One setup step left: attach the Gmail connector to the Routine
+## Setup status
 
-The Routine that fires each morning was created programmatically, and this
-account does not allow attaching connectors that way — so the scheduled sessions
-currently start **without** Gmail and cannot send the email.
+Complete. The Routine **"Daily Peptide & GLP-1 Brief (8:00 AM ET)"** is enabled,
+scheduled, and has the Gmail connector attached, so scheduled runs can send the
+email themselves.
 
-To fix it, open the Routine **"Daily Peptide & GLP-1 Brief (8:00 AM ET)"** in the
-claude.ai Routines UI and enable the **Gmail** connector on it. Nothing else needs
-to change.
-
-Until that is done, each run still commits the brief to `briefs/` and sends a push
-notification with the headline — the brief is readable on GitHub, it just is not
-emailed.
+If email delivery ever stops, check that connector first — open the routine at
+`claude.ai/code/routines` and confirm Gmail is still enabled on it. The brief spec
+degrades gracefully if it is missing: the run still commits the brief to `briefs/`
+and sends a push notification, and says explicitly that email was skipped.
 
 ## Daylight saving
 
