@@ -191,5 +191,12 @@ rather than writing "nothing to report" five times. Cap the brief at roughly
      no raw markdown asterisks in the reader's face.
 3. Send a `PushNotification` with the one-line headline so he knows it landed.
 
-If the email fails, retry once, then still commit the brief and say clearly in the
-session that delivery failed and why.
+**If the Gmail tool is not available** (scheduled runs may start without the
+connector attached), do not treat the run as failed. Commit the brief as above,
+send the `PushNotification` with the headline, and state clearly in the session
+that email delivery was skipped because no Gmail connector was present. The brief
+is still in `briefs/` and readable on GitHub. If the tool exists but the send
+fails, retry once, then do the same.
+
+Never silently drop delivery — every run ends either with an email sent or with an
+explicit statement of why it was not.

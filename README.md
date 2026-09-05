@@ -41,3 +41,24 @@ distinguish a genuinely new development from yesterday's story.
 ## Note
 
 Informational only, not legal advice.
+
+## One setup step left: attach the Gmail connector to the Routine
+
+The Routine that fires each morning was created programmatically, and this
+account does not allow attaching connectors that way — so the scheduled sessions
+currently start **without** Gmail and cannot send the email.
+
+To fix it, open the Routine **"Daily Peptide & GLP-1 Brief (8:00 AM ET)"** in the
+claude.ai Routines UI and enable the **Gmail** connector on it. Nothing else needs
+to change.
+
+Until that is done, each run still commits the brief to `briefs/` and sends a push
+notification with the headline — the brief is readable on GitHub, it just is not
+emailed.
+
+## Daylight saving
+
+The schedule is stored in UTC as `3 12 * * *`, which is 8:03 AM Eastern **while
+EDT is in effect**. When the US falls back to EST in early November, that becomes
+7:03 AM ET. Change the Routine's cron to `3 13 * * *` then to hold 8 AM, and back
+to `3 12 * * *` in March.
