@@ -180,23 +180,34 @@ rather than writing "nothing to report" five times. Cap the brief at roughly
 
 ## Step 4 — Deliver
 
-1. Save the brief to `briefs/YYYY-MM-DD.md`, commit, and push to the
-   `claude/peptide-news-monitor-vrqcw7` branch. This is the archive and it is how
-   tomorrow's run knows what was already reported.
-2. Email it to **tpalamidessi@gmail.com** using the Gmail tool
-   (`mcp__Gmail__send_message`):
-   - Subject on a news day: `Peptide Brief — {Mon D}: {top headline, ~8 words}`
-   - Subject on a quiet day: `Peptide Brief — {Mon D}: No material developments`
-   - Body: the brief as readable HTML — real headings, working source links,
-     no raw markdown asterisks in the reader's face.
-3. Send a `PushNotification` with the one-line headline so he knows it landed.
+**Which delivery paths actually work depends on who is running you.**
 
-**If the Gmail tool is not available** (scheduled runs may start without the
-connector attached), do not treat the run as failed. Commit the brief as above,
-send the `PushNotification` with the headline, and state clearly in the session
-that email delivery was skipped because no Gmail connector was present. The brief
-is still in `briefs/` and readable on GitHub. If the tool exists but the send
-fails, retry once, then do the same.
+### In a scheduled (unattended) run
 
-Never silently drop delivery — every run ends either with an email sent or with an
-explicit statement of why it was not.
+Verified on this account, September 2026: scheduled runs have **no Gmail tool, no
+PushNotification, and no working git push**, even with the Gmail connector attached
+to the Routine. Three separate tests confirmed it. So:
+
+**Your final response IS the deliverable.** Output the complete brief, in full
+markdown, as your closing message — not a summary, not "I've saved the brief."
+The whole thing. That is what the reader sees.
+
+Then, best-effort only and never at the cost of the brief itself: try saving to
+`briefs/YYYY-MM-DD.md` and pushing. If it fails, note it in one line and stop.
+Do not retry, do not treat it as a failure of the run.
+
+### In an interactive session (a person asked for the brief)
+
+Here the full pipeline works and has been proven end to end:
+
+1. Save to `briefs/YYYY-MM-DD.md`, commit, push to
+   `claude/peptide-news-monitor-vrqcw7`. This is the archive and tomorrow's memory.
+2. Convert with `python3 tools/brief_to_html.py briefs/YYYY-MM-DD.md` and email the
+   HTML to **tpalamidessi@gmail.com** via `mcp__Gmail__send_message` (htmlBody =
+   converter output, plus a plain-text `body` fallback).
+   Subject: `Peptide Brief — {Mon D}: {top headline}`, or on a quiet day
+   `Peptide Brief — {Mon D}: No material developments`.
+3. Send a `PushNotification` with the one-line headline.
+
+Never silently drop delivery. Every run ends either with the brief delivered or with
+an explicit statement of what could not be delivered and why.

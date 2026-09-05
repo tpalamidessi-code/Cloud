@@ -42,16 +42,27 @@ distinguish a genuinely new development from yesterday's story.
 
 Informational only, not legal advice.
 
-## Setup status
+## Delivery: what works and what doesn't
 
-Complete. The Routine **"Daily Peptide & GLP-1 Brief (8:00 AM ET)"** is enabled,
-scheduled, and has the Gmail connector attached, so scheduled runs can send the
-email themselves.
+Tested on this account on 2026-09-05, three separate runs:
 
-If email delivery ever stops, check that connector first — open the routine at
-`claude.ai/code/routines` and confirm Gmail is still enabled on it. The brief spec
-degrades gracefully if it is missing: the run still commits the brief to `briefs/`
-and sends a push notification, and says explicitly that email was skipped.
+| Path | Scheduled run | Interactive session |
+|---|---|---|
+| Email via Gmail connector | ❌ tool not available | ✅ works |
+| Push notification | ❌ not available | ✅ works |
+| Commit and push to this repo | ❌ does not land | ✅ works |
+| Brief as the session's final response | ✅ works | ✅ works |
+
+The Gmail connector *is* attached to the Routine, and enabling it was still the right
+move — but scheduled sessions on this account cannot reach it. That is a platform
+limitation, not a configuration mistake.
+
+So the scheduled 8 AM Routine is written to **make its final response the complete
+brief**, readable in the session itself at `claude.ai/code/routines`. Saving to
+`briefs/` is attempted but treated as best-effort.
+
+The reliable path for a brief you can count on is to ask for it in a session: the
+research, the archive commit, and the email all work there.
 
 ## Daylight saving
 
