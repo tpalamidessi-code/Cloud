@@ -33,12 +33,34 @@ with a one-line "what's new today."
 
 ## Step 2 — Sweep the sources
 
-Work all five beats. Use WebSearch for each, and WebFetch the primary source to
-confirm anything material before you write it up.
+Work all five beats. Use WebSearch for each, and corroborate anything material
+with a second independent source before you write it up.
 
-### Beat 1 — FDA (primary source; check directly, do not rely on news coverage)
+### Tooling note — read this before you start
 
-Fetch or search these:
+This environment's egress policy blocks direct web fetches: `WebFetch` and `curl`
+return 403 for fda.gov, accessdata.fda.gov, courtlistener.com, reuters.com, and
+essentially every other outside host. **`WebSearch` is your working tool** — it
+runs server-side and returns real, current content including FDA page text.
+
+So: drive every beat with `WebSearch`, using targeted queries and the
+`allowed_domains` filter to pin a search to a primary source
+(e.g. `allowed_domains: ["fda.gov"]`) rather than fetching that source directly.
+
+Still *attempt* `WebFetch` on a primary document when a detail is material and you
+want the exact wording — if the network policy is ever widened, the brief
+automatically gets better. If it returns EGRESS_BLOCKED, fall back to search and
+move on. Never let a blocked fetch stall the run, and never present search-derived
+detail as if you read the primary document — say "per FDA's posted letter,
+as reported by {source}".
+
+If you cannot confirm a material claim through any working tool, leave it out and
+note the gap in one line at the end of the brief.
+
+### Beat 1 — FDA (primary source; confirm via search pinned to fda.gov)
+
+Search these areas — pin to `allowed_domains: ["fda.gov"]` for the primary text,
+then corroborate with trade press:
 
 - Press announcements — https://www.fda.gov/news-events/fda-newsroom/press-announcements
 - Warning letters — https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/compliance-actions-and-activities/warning-letters
@@ -73,8 +95,10 @@ alerts on Chinese peptide API.
 - DOJ criminal actions on unapproved drug distribution
 - Personal-injury and class-action filings over compounded GLP-1s
 
-Sources: CourtListener/RECAP (https://www.courtlistener.com), Reuters Legal,
-Law360 headlines, Bloomberg Law headlines, company press releases.
+Sources: CourtListener/RECAP, Reuters Legal, Law360, Bloomberg Law, JD Supra and
+law-firm client alerts (Holland & Knight, Foley, Orrick, Buchanan, McDermott —
+these are fast and detailed on this beat), and company investor-relations releases
+(investor.lilly.com, novonordisk.com).
 
 ### Beat 3 — Policy and legislative
 
