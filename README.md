@@ -42,27 +42,19 @@ distinguish a genuinely new development from yesterday's story.
 
 Informational only, not legal advice.
 
-## Delivery: what works and what doesn't
+## Delivery
 
-Tested on this account on 2026-09-05, three separate runs:
+The scheduled run does all three: commits the brief to `briefs/`, emails it to
+tpalamidessi@gmail.com through the Gmail connector, and sends a push notification.
 
-| Path | Scheduled run | Interactive session |
-|---|---|---|
-| Email via Gmail connector | ❌ tool not available | ✅ works |
-| Push notification | ❌ not available | ✅ works |
-| Commit and push to this repo | ❌ does not land | ✅ works |
-| Brief as the session's final response | ✅ works | ✅ works |
+The Gmail connector must stay attached to the Routine for the email step to work —
+it is enabled in the routine settings at `claude.ai/code/routines`. Verified working
+from scheduled runs on 2026-09-06.
 
-The Gmail connector *is* attached to the Routine, and enabling it was still the right
-move — but scheduled sessions on this account cannot reach it. That is a platform
-limitation, not a configuration mistake.
-
-So the scheduled 8 AM Routine is written to **make its final response the complete
-brief**, readable in the session itself at `claude.ai/code/routines`. Saving to
-`briefs/` is attempted but treated as best-effort.
-
-The reliable path for a brief you can count on is to ask for it in a session: the
-research, the archive commit, and the email all work there.
+An earlier version of these docs claimed scheduled runs could not use Gmail. That
+was a misdiagnosis: the verification searched for a test-only subject line while the
+run had emailed the brief under its normal subject. The bad conclusion was briefly
+written into the routine's instructions and cost one morning's delivery.
 
 ## Daylight saving
 

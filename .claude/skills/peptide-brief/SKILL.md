@@ -180,34 +180,35 @@ rather than writing "nothing to report" five times. Cap the brief at roughly
 
 ## Step 4 — Deliver
 
-**Which delivery paths actually work depends on who is running you.**
+All three delivery steps work in both scheduled and interactive runs. This was
+confirmed on 2026-09-06 after an earlier misdiagnosis (see the note at the end).
 
-### In a scheduled (unattended) run
-
-Verified on this account, September 2026: scheduled runs have **no Gmail tool, no
-PushNotification, and no working git push**, even with the Gmail connector attached
-to the Routine. Three separate tests confirmed it. So:
-
-**Your final response IS the deliverable.** Output the complete brief, in full
-markdown, as your closing message — not a summary, not "I've saved the brief."
-The whole thing. That is what the reader sees.
-
-Then, best-effort only and never at the cost of the brief itself: try saving to
-`briefs/YYYY-MM-DD.md` and pushing. If it fails, note it in one line and stop.
-Do not retry, do not treat it as a failure of the run.
-
-### In an interactive session (a person asked for the brief)
-
-Here the full pipeline works and has been proven end to end:
-
-1. Save to `briefs/YYYY-MM-DD.md`, commit, push to
-   `claude/peptide-news-monitor-vrqcw7`. This is the archive and tomorrow's memory.
-2. Convert with `python3 tools/brief_to_html.py briefs/YYYY-MM-DD.md` and email the
-   HTML to **tpalamidessi@gmail.com** via `mcp__Gmail__send_message` (htmlBody =
-   converter output, plus a plain-text `body` fallback).
-   Subject: `Peptide Brief — {Mon D}: {top headline}`, or on a quiet day
-   `Peptide Brief — {Mon D}: No material developments`.
+1. Save the brief to `briefs/YYYY-MM-DD.md`, commit, and push to the
+   `claude/peptide-news-monitor-vrqcw7` branch. This is the archive, and it is how
+   tomorrow's run knows what was already reported.
+2. Email it to **tpalamidessi@gmail.com** via `mcp__Gmail__send_message`:
+   - `python3 tools/brief_to_html.py briefs/YYYY-MM-DD.md` produces the HTML;
+     pass that as `htmlBody` and include a plain-text `body` fallback.
+   - Subject on a news day: `Peptide Brief — {Mon D}: {top headline, ~8 words}`
+   - Subject on a quiet day: `Peptide Brief — {Mon D}: No material developments`
 3. Send a `PushNotification` with the one-line headline.
 
-Never silently drop delivery. Every run ends either with the brief delivered or with
-an explicit statement of what could not be delivered and why.
+If a step genuinely fails, retry once, then state plainly in your final response
+what failed and why. Never silently drop delivery — every run ends either with the
+brief delivered or with an explicit account of what did not go out.
+
+**Also make your final response contain the full brief.** It costs nothing and it
+means the work is readable in the session even if a delivery step fails.
+
+### A note on diagnosing delivery failures
+
+On 2026-09-05 these steps were wrongly declared broken. The cause was a bad check:
+the inbox was searched for a test-only subject line, while the run had actually
+emailed the brief under the normal subject format. The wrong conclusion was then
+written into this spec as "Gmail is unavailable," which silently disabled email on
+the next morning's run.
+
+So: before concluding a delivery channel is broken, search for what the run would
+*actually* have produced, not for the marker you hoped it would use. And never
+encode "this does not work" into the spec on the strength of a single negative
+search.
