@@ -200,6 +200,32 @@ brief delivered or with an explicit account of what did not go out.
 **Also make your final response contain the full brief.** It costs nothing and it
 means the work is readable in the session even if a delivery step fails.
 
+### Why unattended runs fail: check where they STOPPED first
+
+Root cause found 2026-09-06. Scheduled runs have **no repository attached** —
+`/home/user/Cloud` does not exist for them. The routine used to say "work in the repo
+at /home/user/Cloud", so the run went hunting with `find / -iname "*.git"`, which
+tripped a permission prompt. With nobody there to approve it, the session sat in
+`SESSION_STATUS_REQUIRES_ACTION` forever and never reached the email step.
+
+Every downstream symptom — no email, no push, no commit — was just that one block.
+Gmail was never broken.
+
+**So the routine prompt is now fully self-contained**: no file reads, no repo
+dependency, no filesystem exploration, and email is the first delivery step rather
+than the last. The archive step is optional and guarded by a single narrow `ls`.
+
+Two rules that follow:
+
+1. **When an unattended run produces nothing, check its session status before
+   anything else.** `REQUIRES_ACTION` / `BLOCKED` with a `pending_action` tells you
+   the exact command it is stuck on, and that is the whole answer. Testing delivery
+   channels one by one — as was done for an hour on 2026-09-05 — finds nothing,
+   because delivery was never reached.
+2. **Never let an unattended prompt depend on anything that might not be there.** A
+   missing file sends the agent exploring, and exploring means permission prompts,
+   and a permission prompt with nobody watching is a silent hang.
+
 ### A note on diagnosing delivery failures
 
 On 2026-09-05 these steps were wrongly declared broken. The cause was a bad check:
