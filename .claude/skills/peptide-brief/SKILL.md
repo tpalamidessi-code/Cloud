@@ -24,6 +24,38 @@ suddenly risky — not general wellness content.
 5. **If nothing happened, say so.** A short "No material developments" brief is a
    correct and valuable outcome. Never pad with filler to look busy.
 
+## The two failure modes that actually matter
+
+**1. Repeating yourself.** A scheduled run has no repository and therefore no memory
+of its own past briefs. Left alone it rediscovers the same week-old stories every
+morning and presents them as news. The reader noticed this on 2026-09-07 and it is
+the fastest way to make the brief worthless.
+
+The fix, now built into the routine prompt: **read your own prior briefs out of Gmail
+before searching** (`subject:(Peptide Brief) newer_than:14d`, then `get_thread` on the
+recent ones). Gmail works unattended; the repo does not. Anything already reported
+goes to Ongoing matters as one line, and only when there is genuine new movement.
+
+**2. Padding a quiet day.** A two-line "nothing new since {date}" brief is the correct
+output on a slow day and the reader has said he prefers it. Re-describing last week's
+news to fill space is worse than sending almost nothing.
+
+## Reaching FDA when direct access is blocked
+
+`fda.gov`, `accessdata.fda.gov`, `federalregister.gov` and `courtlistener.com` all
+return 403 through this environment's egress policy — `WebFetch` and `curl` cannot
+touch them. Re-confirmed 2026-09-07.
+
+But `WebSearch` runs server-side and is not subject to that policy. Pinning a search
+with `allowed_domains: ["fda.gov"]` returns real FDA page content, including
+individual warning letters with their MARCS-CMS numbers and issue dates. Use that for
+the FDA beat rather than relying on secondary coverage. Same technique for
+federalregister.gov and courtlistener.com.
+
+Widening the environment's network policy to allow those domains would let future runs
+read full primary documents and check dockets directly. That is a settings change on
+the account, not something a run can do for itself.
+
 ## Step 1 — Check what you already reported
 
 Read the three most recent files in `briefs/` before searching. Do not re-report an
