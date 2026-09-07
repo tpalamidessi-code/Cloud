@@ -28,9 +28,43 @@ Quiet days produce a short "No material developments" brief rather than filler.
 
 ## Archive
 
-Every brief is committed to `briefs/YYYY-MM-DD.md`. The archive doubles as the
-agent's memory — it is how each run knows what was already reported and can
-distinguish a genuinely new development from yesterday's story.
+Briefs written from an interactive session are committed to `briefs/YYYY-MM-DD.md`.
+Scheduled runs do **not** archive here — they have no repo — so the folder is a
+partial record, not a complete one. The email history in Gmail is the full archive.
+
+## Changing it
+
+- **Coverage, tone, format** — edit `.claude/skills/peptide-brief/SKILL.md`.
+  The next scheduled run picks up the change automatically.
+- **Schedule or delivery** — ask Claude to update the Routine.
+
+## Note
+
+Informational only, not legal advice.
+
+## Delivery
+
+The scheduled 8:03 AM ET run emails the brief to tpalamidessi@gmail.com through the
+Gmail connector attached to the Routine, and the platform sends a completion
+notification. Verified working unattended on 2026-09-06 and 2026-09-07.
+
+Arrival time varies by 15-20 minutes — the scheduler adds jitter, so a brief landing
+at 8:20 is normal, not a failure.
+
+The routine prompt is deliberately **self-contained**: it reads no files, needs no
+repository, and never explores the filesystem. That is not incidental — see the note
+in the skill file. Scheduled runs have no repo checked out, and the old prompt's
+reference to one sent the agent searching, which tripped a permission prompt that
+nobody was there to approve, hanging the run before it ever delivered.
+
+Keep it that way. Anything the daily brief depends on belongs **in the prompt**, not
+in this repo.
+
+## Archive## Archive
+
+Briefs written from an interactive session are committed to `briefs/YYYY-MM-DD.md`.
+Scheduled runs do **not** archive here — they have no repo — so the folder is a
+partial record, not a complete one. The email history in Gmail is the full archive.
 
 ## Changing it
 
